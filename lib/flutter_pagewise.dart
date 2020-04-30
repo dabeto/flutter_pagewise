@@ -2,6 +2,7 @@ library flutter_pagewise;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/helpers/grid_helpers.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 typedef Widget ItemBuilder<T>(BuildContext context, T entry, int index);
 typedef Future<List<T>> PageFuture<T>(int pageIndex);
@@ -152,27 +153,27 @@ abstract class Pagewise<T> extends StatefulWidget {
   /// constructors of widgets that extend this class
   Pagewise(
       {this.pageSize,
-      this.pageFuture,
-      Key key,
-      this.pageLoadController,
-      this.loadingBuilder,
-      this.retryBuilder,
-      this.noItemsFoundBuilder,
-      this.showRetry: true,
-      @required this.itemBuilder,
-      this.errorBuilder,
-      @required this.builder})
+        this.pageFuture,
+        Key key,
+        this.pageLoadController,
+        this.loadingBuilder,
+        this.retryBuilder,
+        this.noItemsFoundBuilder,
+        this.showRetry: true,
+        @required this.itemBuilder,
+        this.errorBuilder,
+        @required this.builder})
       : assert(showRetry != null),
         assert((pageLoadController == null &&
-                pageSize != null &&
-                pageFuture != null) ||
+            pageSize != null &&
+            pageFuture != null) ||
             (pageLoadController != null &&
                 pageSize == null &&
                 pageFuture == null)),
         assert(showRetry == false || errorBuilder == null,
-            'Cannot specify showRetry and errorBuilder at the same time'),
+        'Cannot specify showRetry and errorBuilder at the same time'),
         assert(showRetry == true || retryBuilder == null,
-            "Cannot specify retryBuilder when showRetry is set to false"),
+        "Cannot specify retryBuilder when showRetry is set to false"),
         super(key: key);
 
   @override
@@ -303,9 +304,9 @@ class PagewiseState<T> extends State<Pagewise<T>> {
         child: widget.errorBuilder != null
             ? widget.errorBuilder(context, this._effectiveController.error)
             : Text('Error: $error',
-                style: TextStyle(
-                    color: Theme.of(context).disabledColor,
-                    fontStyle: FontStyle.italic)));
+            style: TextStyle(
+                color: Theme.of(context).disabledColor,
+                fontStyle: FontStyle.italic)));
   }
 
   Widget _getRetryWidget() {
@@ -512,57 +513,57 @@ class PagewiseListView<T> extends Pagewise<T> {
   /// or those inherited from [Pagewise]
   PagewiseListView(
       {Key key,
-      EdgeInsetsGeometry padding,
-      bool primary,
-      bool addSemanticIndexes = true,
-      int semanticChildCount,
-      bool shrinkWrap: false,
-      ScrollController controller,
-      PagewiseLoadController<T> pageLoadController,
-      double itemExtent,
-      bool addAutomaticKeepAlives: true,
-      Axis scrollDirection: Axis.vertical,
-      bool addRepaintBoundaries: true,
-      double cacheExtent,
-      ScrollPhysics physics,
-      bool reverse: false,
-      int pageSize,
-      PageFuture<T> pageFuture,
-      LoadingBuilder loadingBuilder,
-      RetryBuilder retryBuilder,
-      NoItemsFoundBuilder noItemsFoundBuilder,
-      bool showRetry: true,
-      @required ItemBuilder<T> itemBuilder,
-      ErrorBuilder errorBuilder})
+        EdgeInsetsGeometry padding,
+        bool primary,
+        bool addSemanticIndexes = true,
+        int semanticChildCount,
+        bool shrinkWrap: false,
+        ScrollController controller,
+        PagewiseLoadController<T> pageLoadController,
+        double itemExtent,
+        bool addAutomaticKeepAlives: true,
+        Axis scrollDirection: Axis.vertical,
+        bool addRepaintBoundaries: true,
+        double cacheExtent,
+        ScrollPhysics physics,
+        bool reverse: false,
+        int pageSize,
+        PageFuture<T> pageFuture,
+        LoadingBuilder loadingBuilder,
+        RetryBuilder retryBuilder,
+        NoItemsFoundBuilder noItemsFoundBuilder,
+        bool showRetry: true,
+        @required ItemBuilder<T> itemBuilder,
+        ErrorBuilder errorBuilder})
       : super(
-            pageSize: pageSize,
-            pageFuture: pageFuture,
-            pageLoadController: pageLoadController,
-            key: key,
-            loadingBuilder: loadingBuilder,
-            retryBuilder: retryBuilder,
-            showRetry: showRetry,
-            itemBuilder: itemBuilder,
-            errorBuilder: errorBuilder,
-            noItemsFoundBuilder: noItemsFoundBuilder,
-            builder: (PagewiseState<T> state) {
-              return ListView.builder(
-                  itemExtent: itemExtent,
-                  addAutomaticKeepAlives: addAutomaticKeepAlives,
-                  scrollDirection: scrollDirection,
-                  addRepaintBoundaries: addRepaintBoundaries,
-                  cacheExtent: cacheExtent,
-                  physics: physics,
-                  reverse: reverse,
-                  padding: padding,
-                  addSemanticIndexes: addSemanticIndexes,
-                  semanticChildCount: semanticChildCount,
-                  shrinkWrap: shrinkWrap,
-                  primary: primary,
-                  controller: controller,
-                  itemCount: state._itemCount,
-                  itemBuilder: state._itemBuilder);
-            });
+      pageSize: pageSize,
+      pageFuture: pageFuture,
+      pageLoadController: pageLoadController,
+      key: key,
+      loadingBuilder: loadingBuilder,
+      retryBuilder: retryBuilder,
+      showRetry: showRetry,
+      itemBuilder: itemBuilder,
+      errorBuilder: errorBuilder,
+      noItemsFoundBuilder: noItemsFoundBuilder,
+      builder: (PagewiseState<T> state) {
+        return ListView.builder(
+            itemExtent: itemExtent,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            scrollDirection: scrollDirection,
+            addRepaintBoundaries: addRepaintBoundaries,
+            cacheExtent: cacheExtent,
+            physics: physics,
+            reverse: reverse,
+            padding: padding,
+            addSemanticIndexes: addSemanticIndexes,
+            semanticChildCount: semanticChildCount,
+            shrinkWrap: shrinkWrap,
+            primary: primary,
+            controller: controller,
+            itemCount: state._itemCount,
+            itemBuilder: state._itemBuilder);
+      });
 }
 
 class PagewiseGridView<T> extends Pagewise<T> {
@@ -572,66 +573,66 @@ class PagewiseGridView<T> extends Pagewise<T> {
   /// or those inherited from [Pagewise]
   PagewiseGridView.count(
       {Key key,
-      EdgeInsetsGeometry padding,
-      @required int crossAxisCount,
-      double childAspectRatio = 1.0,
-      double crossAxisSpacing = 0.0,
-      double mainAxisSpacing = 0.0,
-      bool addSemanticIndexes = true,
-      int semanticChildCount,
-      bool primary,
-      bool shrinkWrap: false,
-      ScrollController controller,
-      PagewiseLoadController<T> pageLoadController,
-      bool addAutomaticKeepAlives: true,
-      Axis scrollDirection: Axis.vertical,
-      bool addRepaintBoundaries: true,
-      double cacheExtent,
-      ScrollPhysics physics,
-      bool reverse: false,
-      int pageSize,
-      PageFuture<T> pageFuture,
-      LoadingBuilder loadingBuilder,
-      RetryBuilder retryBuilder,
-      NoItemsFoundBuilder noItemsFoundBuilder,
-      bool showRetry: true,
-      @required ItemBuilder<T> itemBuilder,
-      ErrorBuilder errorBuilder})
+        EdgeInsetsGeometry padding,
+        @required int crossAxisCount,
+        double childAspectRatio = 1.0,
+        double crossAxisSpacing = 0.0,
+        double mainAxisSpacing = 0.0,
+        bool addSemanticIndexes = true,
+        int semanticChildCount,
+        bool primary,
+        bool shrinkWrap: false,
+        ScrollController controller,
+        PagewiseLoadController<T> pageLoadController,
+        bool addAutomaticKeepAlives: true,
+        Axis scrollDirection: Axis.vertical,
+        bool addRepaintBoundaries: true,
+        double cacheExtent,
+        ScrollPhysics physics,
+        bool reverse: false,
+        int pageSize,
+        PageFuture<T> pageFuture,
+        LoadingBuilder loadingBuilder,
+        RetryBuilder retryBuilder,
+        NoItemsFoundBuilder noItemsFoundBuilder,
+        bool showRetry: true,
+        @required ItemBuilder<T> itemBuilder,
+        ErrorBuilder errorBuilder})
       : super(
-            pageSize: pageSize,
-            pageFuture: pageFuture,
-            pageLoadController: pageLoadController,
-            key: key,
-            loadingBuilder: loadingBuilder,
-            retryBuilder: retryBuilder,
-            showRetry: showRetry,
-            itemBuilder: itemBuilder,
-            errorBuilder: errorBuilder,
-            noItemsFoundBuilder: noItemsFoundBuilder,
-            builder: (PagewiseState<T> state) {
-              return GridView.builder(
-                  reverse: reverse,
-                  physics: physics,
-                  cacheExtent: cacheExtent,
-                  addRepaintBoundaries: addRepaintBoundaries,
-                  scrollDirection: scrollDirection,
-                  addAutomaticKeepAlives: addAutomaticKeepAlives,
-                  controller: controller,
-                  primary: primary,
-                  shrinkWrap: shrinkWrap,
-                  padding: padding,
-                  addSemanticIndexes: addSemanticIndexes,
-                  semanticChildCount: semanticChildCount,
-                  gridDelegate:
-                      SliverGridDelegateWithFixedCrossAxisCountAndLoading(
-                          crossAxisCount: crossAxisCount,
-                          childAspectRatio: childAspectRatio,
-                          crossAxisSpacing: crossAxisSpacing,
-                          mainAxisSpacing: mainAxisSpacing,
-                          itemCount: state._itemCount),
-                  itemCount: state._itemCount,
-                  itemBuilder: state._itemBuilder);
-            });
+      pageSize: pageSize,
+      pageFuture: pageFuture,
+      pageLoadController: pageLoadController,
+      key: key,
+      loadingBuilder: loadingBuilder,
+      retryBuilder: retryBuilder,
+      showRetry: showRetry,
+      itemBuilder: itemBuilder,
+      errorBuilder: errorBuilder,
+      noItemsFoundBuilder: noItemsFoundBuilder,
+      builder: (PagewiseState<T> state) {
+        return GridView.builder(
+            reverse: reverse,
+            physics: physics,
+            cacheExtent: cacheExtent,
+            addRepaintBoundaries: addRepaintBoundaries,
+            scrollDirection: scrollDirection,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            controller: controller,
+            primary: primary,
+            shrinkWrap: shrinkWrap,
+            padding: padding,
+            addSemanticIndexes: addSemanticIndexes,
+            semanticChildCount: semanticChildCount,
+            gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCountAndLoading(
+                crossAxisCount: crossAxisCount,
+                childAspectRatio: childAspectRatio,
+                crossAxisSpacing: crossAxisSpacing,
+                mainAxisSpacing: mainAxisSpacing,
+                itemCount: state._itemCount),
+            itemCount: state._itemCount,
+            itemBuilder: state._itemBuilder);
+      });
 
   /// Creates a Pagewise GridView with a maxCrossAxisExtent.
   ///
@@ -639,66 +640,66 @@ class PagewiseGridView<T> extends Pagewise<T> {
   /// or those inherited from [Pagewise]
   PagewiseGridView.extent(
       {Key key,
-      EdgeInsetsGeometry padding,
-      @required double maxCrossAxisExtent,
-      double childAspectRatio = 1.0,
-      double crossAxisSpacing = 0.0,
-      double mainAxisSpacing = 0.0,
-      bool addSemanticIndexes = true,
-      int semanticChildCount,
-      bool primary,
-      bool shrinkWrap: false,
-      ScrollController controller,
-      PagewiseLoadController<T> pageLoadController,
-      bool addAutomaticKeepAlives: true,
-      Axis scrollDirection: Axis.vertical,
-      bool addRepaintBoundaries: true,
-      double cacheExtent,
-      ScrollPhysics physics,
-      bool reverse: false,
-      int pageSize,
-      PageFuture<T> pageFuture,
-      LoadingBuilder loadingBuilder,
-      RetryBuilder retryBuilder,
-      NoItemsFoundBuilder noItemsFoundBuilder,
-      bool showRetry: true,
-      @required ItemBuilder<T> itemBuilder,
-      ErrorBuilder errorBuilder})
+        EdgeInsetsGeometry padding,
+        @required double maxCrossAxisExtent,
+        double childAspectRatio = 1.0,
+        double crossAxisSpacing = 0.0,
+        double mainAxisSpacing = 0.0,
+        bool addSemanticIndexes = true,
+        int semanticChildCount,
+        bool primary,
+        bool shrinkWrap: false,
+        ScrollController controller,
+        PagewiseLoadController<T> pageLoadController,
+        bool addAutomaticKeepAlives: true,
+        Axis scrollDirection: Axis.vertical,
+        bool addRepaintBoundaries: true,
+        double cacheExtent,
+        ScrollPhysics physics,
+        bool reverse: false,
+        int pageSize,
+        PageFuture<T> pageFuture,
+        LoadingBuilder loadingBuilder,
+        RetryBuilder retryBuilder,
+        NoItemsFoundBuilder noItemsFoundBuilder,
+        bool showRetry: true,
+        @required ItemBuilder<T> itemBuilder,
+        ErrorBuilder errorBuilder})
       : super(
-            pageSize: pageSize,
-            pageFuture: pageFuture,
-            pageLoadController: pageLoadController,
-            key: key,
-            loadingBuilder: loadingBuilder,
-            retryBuilder: retryBuilder,
-            showRetry: showRetry,
-            itemBuilder: itemBuilder,
-            errorBuilder: errorBuilder,
-            noItemsFoundBuilder: noItemsFoundBuilder,
-            builder: (PagewiseState<T> state) {
-              return GridView.builder(
-                  reverse: reverse,
-                  physics: physics,
-                  cacheExtent: cacheExtent,
-                  addRepaintBoundaries: addRepaintBoundaries,
-                  scrollDirection: scrollDirection,
-                  addAutomaticKeepAlives: addAutomaticKeepAlives,
-                  addSemanticIndexes: addSemanticIndexes,
-                  semanticChildCount: semanticChildCount,
-                  controller: controller,
-                  primary: primary,
-                  shrinkWrap: shrinkWrap,
-                  padding: padding,
-                  gridDelegate:
-                      SliverGridDelegateWithMaxCrossAxisExtentAndLoading(
-                          maxCrossAxisExtent: maxCrossAxisExtent,
-                          childAspectRatio: childAspectRatio,
-                          crossAxisSpacing: crossAxisSpacing,
-                          mainAxisSpacing: mainAxisSpacing,
-                          itemCount: state._itemCount),
-                  itemCount: state._itemCount,
-                  itemBuilder: state._itemBuilder);
-            });
+      pageSize: pageSize,
+      pageFuture: pageFuture,
+      pageLoadController: pageLoadController,
+      key: key,
+      loadingBuilder: loadingBuilder,
+      retryBuilder: retryBuilder,
+      showRetry: showRetry,
+      itemBuilder: itemBuilder,
+      errorBuilder: errorBuilder,
+      noItemsFoundBuilder: noItemsFoundBuilder,
+      builder: (PagewiseState<T> state) {
+        return GridView.builder(
+            reverse: reverse,
+            physics: physics,
+            cacheExtent: cacheExtent,
+            addRepaintBoundaries: addRepaintBoundaries,
+            scrollDirection: scrollDirection,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addSemanticIndexes: addSemanticIndexes,
+            semanticChildCount: semanticChildCount,
+            controller: controller,
+            primary: primary,
+            shrinkWrap: shrinkWrap,
+            padding: padding,
+            gridDelegate:
+            SliverGridDelegateWithMaxCrossAxisExtentAndLoading(
+                maxCrossAxisExtent: maxCrossAxisExtent,
+                childAspectRatio: childAspectRatio,
+                crossAxisSpacing: crossAxisSpacing,
+                mainAxisSpacing: mainAxisSpacing,
+                itemCount: state._itemCount),
+            itemCount: state._itemCount,
+            itemBuilder: state._itemBuilder);
+      });
 }
 
 int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
@@ -710,43 +711,43 @@ class PagewiseSliverList<T> extends Pagewise<T> {
   /// or those inherited from [Pagewise]
   PagewiseSliverList(
       {Key key,
-      bool addSemanticIndexes = true,
-      bool addAutomaticKeepAlives: true,
-      bool addRepaintBoundaries: true,
-      SemanticIndexCallback semanticIndexCallback =
-          _kDefaultSemanticIndexCallback,
-      int semanticIndexOffset = 0,
-      PagewiseLoadController<T> pageLoadController,
-      int pageSize,
-      PageFuture<T> pageFuture,
-      LoadingBuilder loadingBuilder,
-      RetryBuilder retryBuilder,
-      NoItemsFoundBuilder noItemsFoundBuilder,
-      bool showRetry: true,
-      @required ItemBuilder<T> itemBuilder,
-      ErrorBuilder errorBuilder})
+        bool addSemanticIndexes = true,
+        bool addAutomaticKeepAlives: true,
+        bool addRepaintBoundaries: true,
+        SemanticIndexCallback semanticIndexCallback =
+            _kDefaultSemanticIndexCallback,
+        int semanticIndexOffset = 0,
+        PagewiseLoadController<T> pageLoadController,
+        int pageSize,
+        PageFuture<T> pageFuture,
+        LoadingBuilder loadingBuilder,
+        RetryBuilder retryBuilder,
+        NoItemsFoundBuilder noItemsFoundBuilder,
+        bool showRetry: true,
+        @required ItemBuilder<T> itemBuilder,
+        ErrorBuilder errorBuilder})
       : super(
-            pageSize: pageSize,
-            pageFuture: pageFuture,
-            pageLoadController: pageLoadController,
-            key: key,
-            loadingBuilder: loadingBuilder,
-            retryBuilder: retryBuilder,
-            showRetry: showRetry,
-            itemBuilder: itemBuilder,
-            errorBuilder: errorBuilder,
-            noItemsFoundBuilder: noItemsFoundBuilder,
-            builder: (PagewiseState<T> state) {
-              return SliverList(
-                delegate: SliverChildBuilderDelegate(state._itemBuilder,
-                    addAutomaticKeepAlives: addAutomaticKeepAlives,
-                    addRepaintBoundaries: addRepaintBoundaries,
-                    addSemanticIndexes: addSemanticIndexes,
-                    semanticIndexCallback: semanticIndexCallback,
-                    semanticIndexOffset: semanticIndexOffset,
-                    childCount: state._itemCount),
-              );
-            });
+      pageSize: pageSize,
+      pageFuture: pageFuture,
+      pageLoadController: pageLoadController,
+      key: key,
+      loadingBuilder: loadingBuilder,
+      retryBuilder: retryBuilder,
+      showRetry: showRetry,
+      itemBuilder: itemBuilder,
+      errorBuilder: errorBuilder,
+      noItemsFoundBuilder: noItemsFoundBuilder,
+      builder: (PagewiseState<T> state) {
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(state._itemBuilder,
+              addAutomaticKeepAlives: addAutomaticKeepAlives,
+              addRepaintBoundaries: addRepaintBoundaries,
+              addSemanticIndexes: addSemanticIndexes,
+              semanticIndexCallback: semanticIndexCallback,
+              semanticIndexOffset: semanticIndexOffset,
+              childCount: state._itemCount),
+        );
+      });
 }
 
 class PagewiseSliverGrid<T> extends Pagewise<T> {
@@ -756,54 +757,54 @@ class PagewiseSliverGrid<T> extends Pagewise<T> {
   /// or those inherited from [Pagewise]
   PagewiseSliverGrid.count(
       {Key key,
-      bool addSemanticIndexes = true,
-      bool addAutomaticKeepAlives: true,
-      bool addRepaintBoundaries: true,
-      SemanticIndexCallback semanticIndexCallback =
-          _kDefaultSemanticIndexCallback,
-      int semanticIndexOffset = 0,
-      @required int crossAxisCount,
-      double childAspectRatio = 1.0,
-      double crossAxisSpacing = 0.0,
-      double mainAxisSpacing = 0.0,
-      PagewiseLoadController<T> pageLoadController,
-      int pageSize,
-      PageFuture<T> pageFuture,
-      LoadingBuilder loadingBuilder,
-      RetryBuilder retryBuilder,
-      NoItemsFoundBuilder noItemsFoundBuilder,
-      bool showRetry: true,
-      @required ItemBuilder<T> itemBuilder,
-      ErrorBuilder errorBuilder})
+        bool addSemanticIndexes = true,
+        bool addAutomaticKeepAlives: true,
+        bool addRepaintBoundaries: true,
+        SemanticIndexCallback semanticIndexCallback =
+            _kDefaultSemanticIndexCallback,
+        int semanticIndexOffset = 0,
+        @required int crossAxisCount,
+        double childAspectRatio = 1.0,
+        double crossAxisSpacing = 0.0,
+        double mainAxisSpacing = 0.0,
+        PagewiseLoadController<T> pageLoadController,
+        int pageSize,
+        PageFuture<T> pageFuture,
+        LoadingBuilder loadingBuilder,
+        RetryBuilder retryBuilder,
+        NoItemsFoundBuilder noItemsFoundBuilder,
+        bool showRetry: true,
+        @required ItemBuilder<T> itemBuilder,
+        ErrorBuilder errorBuilder})
       : super(
-            pageSize: pageSize,
-            pageFuture: pageFuture,
-            pageLoadController: pageLoadController,
-            key: key,
-            loadingBuilder: loadingBuilder,
-            retryBuilder: retryBuilder,
-            showRetry: showRetry,
-            itemBuilder: itemBuilder,
-            errorBuilder: errorBuilder,
-            noItemsFoundBuilder: noItemsFoundBuilder,
-            builder: (PagewiseState<T> state) {
-              return SliverGrid(
-                delegate: SliverChildBuilderDelegate(state._itemBuilder,
-                    addAutomaticKeepAlives: addAutomaticKeepAlives,
-                    addRepaintBoundaries: addRepaintBoundaries,
-                    addSemanticIndexes: addSemanticIndexes,
-                    semanticIndexCallback: semanticIndexCallback,
-                    semanticIndexOffset: semanticIndexOffset,
-                    childCount: state._itemCount),
-                gridDelegate:
-                    SliverGridDelegateWithFixedCrossAxisCountAndLoading(
-                        crossAxisCount: crossAxisCount,
-                        childAspectRatio: childAspectRatio,
-                        crossAxisSpacing: crossAxisSpacing,
-                        mainAxisSpacing: mainAxisSpacing,
-                        itemCount: state._itemCount),
-              );
-            });
+      pageSize: pageSize,
+      pageFuture: pageFuture,
+      pageLoadController: pageLoadController,
+      key: key,
+      loadingBuilder: loadingBuilder,
+      retryBuilder: retryBuilder,
+      showRetry: showRetry,
+      itemBuilder: itemBuilder,
+      errorBuilder: errorBuilder,
+      noItemsFoundBuilder: noItemsFoundBuilder,
+      builder: (PagewiseState<T> state) {
+        return SliverGrid(
+          delegate: SliverChildBuilderDelegate(state._itemBuilder,
+              addAutomaticKeepAlives: addAutomaticKeepAlives,
+              addRepaintBoundaries: addRepaintBoundaries,
+              addSemanticIndexes: addSemanticIndexes,
+              semanticIndexCallback: semanticIndexCallback,
+              semanticIndexOffset: semanticIndexOffset,
+              childCount: state._itemCount),
+          gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCountAndLoading(
+              crossAxisCount: crossAxisCount,
+              childAspectRatio: childAspectRatio,
+              crossAxisSpacing: crossAxisSpacing,
+              mainAxisSpacing: mainAxisSpacing,
+              itemCount: state._itemCount),
+        );
+      });
 
   /// Creates a Pagewise SliverGrid with a maxCrossAxisExtent.
   ///
@@ -811,52 +812,102 @@ class PagewiseSliverGrid<T> extends Pagewise<T> {
   /// or those inherited from [Pagewise]
   PagewiseSliverGrid.extent(
       {Key key,
-      bool addSemanticIndexes = true,
-      bool addAutomaticKeepAlives: true,
-      bool addRepaintBoundaries: true,
-      SemanticIndexCallback semanticIndexCallback =
-          _kDefaultSemanticIndexCallback,
-      int semanticIndexOffset = 0,
-      @required double maxCrossAxisExtent,
-      double childAspectRatio = 1.0,
-      double crossAxisSpacing = 0.0,
-      double mainAxisSpacing = 0.0,
-      PagewiseLoadController<T> pageLoadController,
-      int pageSize,
-      PageFuture<T> pageFuture,
-      LoadingBuilder loadingBuilder,
-      RetryBuilder retryBuilder,
-      NoItemsFoundBuilder noItemsFoundBuilder,
-      bool showRetry: true,
-      @required ItemBuilder<T> itemBuilder,
-      ErrorBuilder errorBuilder})
+        bool addSemanticIndexes = true,
+        bool addAutomaticKeepAlives: true,
+        bool addRepaintBoundaries: true,
+        SemanticIndexCallback semanticIndexCallback =
+            _kDefaultSemanticIndexCallback,
+        int semanticIndexOffset = 0,
+        @required double maxCrossAxisExtent,
+        double childAspectRatio = 1.0,
+        double crossAxisSpacing = 0.0,
+        double mainAxisSpacing = 0.0,
+        PagewiseLoadController<T> pageLoadController,
+        int pageSize,
+        PageFuture<T> pageFuture,
+        LoadingBuilder loadingBuilder,
+        RetryBuilder retryBuilder,
+        NoItemsFoundBuilder noItemsFoundBuilder,
+        bool showRetry: true,
+        @required ItemBuilder<T> itemBuilder,
+        ErrorBuilder errorBuilder})
       : super(
-            pageSize: pageSize,
-            pageFuture: pageFuture,
-            pageLoadController: pageLoadController,
-            key: key,
-            loadingBuilder: loadingBuilder,
-            noItemsFoundBuilder: noItemsFoundBuilder,
-            retryBuilder: retryBuilder,
-            showRetry: showRetry,
-            itemBuilder: itemBuilder,
-            errorBuilder: errorBuilder,
-            builder: (PagewiseState<T> state) {
-              return SliverGrid(
-                delegate: SliverChildBuilderDelegate(state._itemBuilder,
-                    addAutomaticKeepAlives: addAutomaticKeepAlives,
-                    addRepaintBoundaries: addRepaintBoundaries,
-                    addSemanticIndexes: addSemanticIndexes,
-                    semanticIndexCallback: semanticIndexCallback,
-                    semanticIndexOffset: semanticIndexOffset,
-                    childCount: state._itemCount),
-                gridDelegate:
-                    SliverGridDelegateWithMaxCrossAxisExtentAndLoading(
-                        maxCrossAxisExtent: maxCrossAxisExtent,
-                        childAspectRatio: childAspectRatio,
-                        crossAxisSpacing: crossAxisSpacing,
-                        mainAxisSpacing: mainAxisSpacing,
-                        itemCount: state._itemCount),
-              );
-            });
+      pageSize: pageSize,
+      pageFuture: pageFuture,
+      pageLoadController: pageLoadController,
+      key: key,
+      loadingBuilder: loadingBuilder,
+      noItemsFoundBuilder: noItemsFoundBuilder,
+      retryBuilder: retryBuilder,
+      showRetry: showRetry,
+      itemBuilder: itemBuilder,
+      errorBuilder: errorBuilder,
+      builder: (PagewiseState<T> state) {
+        return SliverGrid(
+          delegate: SliverChildBuilderDelegate(state._itemBuilder,
+              addAutomaticKeepAlives: addAutomaticKeepAlives,
+              addRepaintBoundaries: addRepaintBoundaries,
+              addSemanticIndexes: addSemanticIndexes,
+              semanticIndexCallback: semanticIndexCallback,
+              semanticIndexOffset: semanticIndexOffset,
+              childCount: state._itemCount),
+          gridDelegate:
+          SliverGridDelegateWithMaxCrossAxisExtentAndLoading(
+              maxCrossAxisExtent: maxCrossAxisExtent,
+              childAspectRatio: childAspectRatio,
+              crossAxisSpacing: crossAxisSpacing,
+              mainAxisSpacing: mainAxisSpacing,
+              itemCount: state._itemCount),
+        );
+      });
+}
+
+class PageWiseSliverStaggeredGrid<T> extends Pagewise<T> {
+  PageWiseSliverStaggeredGrid.count(
+      {Key key,
+        EdgeInsetsGeometry padding,
+        @required int crossAxisCount,
+        double childAspectRatio = 1.0,
+        double crossAxisSpacing = 0.0,
+        double mainAxisSpacing = 0.0,
+        bool addSemanticIndexes = true,
+        int semanticChildCount,
+        bool primary,
+        bool shrinkWrap: false,
+        ScrollController controller,
+        PagewiseLoadController<T> pageLoadController,
+        bool addAutomaticKeepAlives: true,
+        Axis scrollDirection: Axis.vertical,
+        bool addRepaintBoundaries: true,
+        double cacheExtent,
+        ScrollPhysics physics,
+        bool reverse: false,
+        int pageSize,
+        PageFuture<T> pageFuture,
+        LoadingBuilder loadingBuilder,
+        RetryBuilder retryBuilder,
+        NoItemsFoundBuilder noItemsFoundBuilder,
+        bool showRetry: true,
+        @required ItemBuilder<T> itemBuilder,
+        ErrorBuilder errorBuilder})
+      : super(
+      pageSize: pageSize,
+      pageFuture: pageFuture,
+      pageLoadController: pageLoadController,
+      key: key,
+      loadingBuilder: loadingBuilder,
+      retryBuilder: retryBuilder,
+      showRetry: showRetry,
+      itemBuilder: itemBuilder,
+      errorBuilder: errorBuilder,
+      noItemsFoundBuilder: noItemsFoundBuilder,
+      builder: (PagewiseState<T> state) {
+        return SliverStaggeredGrid.countBuilder(
+            crossAxisCount: crossAxisCount,
+            staggeredTileBuilder: (_) => StaggeredTile.fit(1),
+            itemBuilder: state._itemBuilder,
+            itemCount: state._itemCount);
+      });
+
+
 }
